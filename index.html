@@ -31,10 +31,16 @@
 
         // Load Markdown template
         useEffect(() => {
-          fetch('/cover_letter.md')
-            .then((response) => response.text())
-            .then((text) => setTemplate(text))
-            .catch((error) => console.error('Error loading template:', error))
+          const loadTemplate = async () => {
+            try {
+              const response = await fetch('/cover_letter.md')
+              const text = await response.text()
+              setTemplate(text)
+            } catch (error) {
+              console.error('Error loading template:', error)
+            }
+          }
+          loadTemplate()
         }, [])
 
         // Load custom font (Roboto Regular) with fallback
@@ -42,7 +48,7 @@
           const loadFont = async () => {
             try {
               const response = await fetch(
-                'https://fonts.google.com/share?selection.family=Roboto:ital,wght@0,100..900;1,100..900'
+                'https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap'
               )
               if (!response.ok) throw new Error('Font fetch failed')
               const fontData = await response.arrayBuffer()
